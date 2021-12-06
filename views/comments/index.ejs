@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comments</title>
+</head>
+<body>
+    <h1>Comments:</h1>
+    <ul>
+        <% for (let comment of comments) {%>
+        <li><%= comment.text %> - <b><%= comment.username %></b> - <a href="/comments/<%= comment.id %>">See more</a></li>
+        <% } %>
+    </ul>
+    <a href="/comments/new">Make a comment</a>
+</body>
+</html>
