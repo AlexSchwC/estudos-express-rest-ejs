@@ -1,15 +1,18 @@
 const express = require ("express");
 const server = express();
 const path = require("path");
+const methodOverride = require('method-override');
 const { v4: uuid } = require('uuid');
 
 
 server.use(express.urlencoded({ extended: true }));
 server.use(express.json());
+server.use(methodOverride("_method"));
 server.set("view engine", "ejs");
 server.set("views", path.join(__dirname, "views"));
 
-const comments = [
+
+let comments = [
     {
         id: uuid(),
         username: "Alex",
@@ -50,6 +53,26 @@ server.get("/comments/:id", (req, res) => {
     //     return c.id === parseInt(id);
     // })
     res.render("comments/show", { comment });
+})
+
+server.patch("/comments/:id", (req, res) => {
+    const { id } = req.params;
+    const newComment = req.body.text;
+    const commentChange = comments.find(comment => comment.id === id);
+    commentChange.text = newComment;
+    res.redirect("/comments");
+})
+
+server.get("/comments/:id/edit", (req, res) => {
+    const { id } = req.params;
+    const comment = comments.find(comment => comment.id === id);
+    res.render("comments/edit", { comment })
+})
+
+server.delete("/comments/:id", (req, res) => {
+    const { id } = req.params;
+    comments = comments.filter(c => c.id !== id)
+    res.redirect("/comments")
 })
 
 //
